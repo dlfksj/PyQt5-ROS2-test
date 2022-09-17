@@ -1,0 +1,25 @@
+version: "3"
+services:
+  galactic_ws:
+    image: ros2_galactic:latest
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    container_name: gcs_ws
+    privileged: true
+    network_mode: host
+    environment:
+      - "DISPLAY"
+      - "QT_X11_NO_MITSHM=1"
+    volumes:
+      - /root/.Xauthority:/root/.Xauthority
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./:/root/gcs_ws
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    command: sleep infinity
